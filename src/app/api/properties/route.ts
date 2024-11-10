@@ -24,7 +24,6 @@ export async function POST(request: Request) {
     })
     return NextResponse.json(property)
   } catch (error) {
-    alert('Erro a Criar:')
     return NextResponse.json({ error: 'Erro ao criar' }, { status: 500 })
   }
 }

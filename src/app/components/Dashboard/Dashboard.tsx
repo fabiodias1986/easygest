@@ -28,7 +28,6 @@ export default function Dashboard() {
       setProperties(data)
       setTotalRecords(data.length)
     } catch (error) {
-      alert('Erro a processar dados')
     }
   }, [])
 
@@ -74,7 +73,7 @@ export default function Dashboard() {
       setShowSuccessModal(true) // Show success modal
       setTimeout(() => setShowSuccessModal(false), 3000) // Hide after 3 seconds
     } catch (error) {
-      alert('Erro a Gravar')
+    
     }
   }
 
@@ -90,7 +89,7 @@ export default function Dashboard() {
       if (!response.ok) throw new Error('Failed to delete property')
       await fetchProperties()
     } catch (error) {
-      alert('Erro apagar')
+      
     }
   }
 
