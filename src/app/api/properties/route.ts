@@ -8,8 +8,7 @@ export async function GET() {
     const properties = await prisma.property.findMany()
     return NextResponse.json(properties)
   } catch (error) {
-    console.error('Error fetching properties:', error)
-    return NextResponse.json({ error: 'Error fetching properties' }, { status: 500 })
+    return NextResponse.json({ error: 'Erro' }, { status: 500 })
   }
 }
 
@@ -25,7 +24,7 @@ export async function POST(request: Request) {
     })
     return NextResponse.json(property)
   } catch (error) {
-    console.error('Error creating property:', error)
-    return NextResponse.json({ error: 'Error creating property' }, { status: 500 })
+    alert('Erro a Criar:')
+    return NextResponse.json({ error: 'Erro ao criar' }, { status: 500 })
   }
 }

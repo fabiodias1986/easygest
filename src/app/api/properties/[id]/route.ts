@@ -16,7 +16,6 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     })
     return NextResponse.json(property)
   } catch (error) {
-    console.error('Error updating property:', error)
     return NextResponse.json({ error: 'Error updating property' }, { status: 500 })
   }
 }
@@ -26,9 +25,8 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
     await prisma.property.delete({
       where: { id: params.id },
     })
-    return NextResponse.json({ message: 'Property deleted' })
+    return NextResponse.json({ message: 'Localização apagada' })
   } catch (error) {
-    console.error('Error deleting property:', error)
-    return NextResponse.json({ error: 'Error deleting property' }, { status: 500 })
+    return NextResponse.json({ error: 'Erro a apagar' }, { status: 500 })
   }
 }

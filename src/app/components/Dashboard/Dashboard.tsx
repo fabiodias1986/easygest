@@ -23,12 +23,12 @@ export default function Dashboard() {
   const fetchProperties = useCallback(async () => {
     try {
       const response = await fetch('/api/properties')
-      if (!response.ok) throw new Error('Failed to fetch properties')
+      if (!response.ok) throw new Error('Erro')
       const data = await response.json()
       setProperties(data)
       setTotalRecords(data.length)
     } catch (error) {
-      console.error('Error fetching properties:', error)
+      alert('Erro a processar dados')
     }
   }, [])
 
@@ -67,14 +67,14 @@ export default function Dashboard() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(currentProperty),
       })
-      if (!response.ok) throw new Error('Failed to save property')
+      if (!response.ok) throw new Error('Erro a guardar')
       await fetchProperties()
       setIsModalOpen(false)
       setCurrentProperty(null)
       setShowSuccessModal(true) // Show success modal
       setTimeout(() => setShowSuccessModal(false), 3000) // Hide after 3 seconds
     } catch (error) {
-      console.error('Error saving property:', error)
+      alert('Erro a Gravar')
     }
   }
 
@@ -90,7 +90,7 @@ export default function Dashboard() {
       if (!response.ok) throw new Error('Failed to delete property')
       await fetchProperties()
     } catch (error) {
-      console.error('Error deleting property:', error)
+      alert('Erro apagar')
     }
   }
 
