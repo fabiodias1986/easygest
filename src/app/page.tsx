@@ -8,8 +8,6 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [data, setData] = useState<any[]>([]); // Estado para armazenar os dados
-  const [showData, setShowData] = useState(false); // Estado para controlar a exibição dos dados
 
   useEffect(() => {
     const storedAuth = localStorage.getItem('isAuthenticated');
@@ -51,16 +49,16 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="h-screen flex items-center justify-center bg-blue-50">
+    <div className="h-screen flex items-center justify-center bg-blue-700">
       <div className="bg-white p-8 rounded-lg shadow-md w-96">
-        <h1 className="text-2xl font-bold mb-4 text-blue-600">Login</h1>
+        <h1 className="text-center text-2xl font-bold mb-4 text-blue-500">Entrar</h1>
         <form onSubmit={handleSubmit}>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Senha"
-            className="w-full p-2 mb-4 border rounded"
+            className="w-full p-2 mb-4 border rounded focus:outline-none "
           />
           <button
             type="submit"

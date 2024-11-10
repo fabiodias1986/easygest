@@ -18,6 +18,7 @@ export default function Dashboard() {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [totalRecords, setTotalRecords] = useState(0)
   const [showAllRecords, setShowAllRecords] = useState(false)
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
 
   const fetchProperties = useCallback(async () => {
     try {
@@ -70,6 +71,8 @@ export default function Dashboard() {
       await fetchProperties()
       setIsModalOpen(false)
       setCurrentProperty(null)
+      setShowSuccessModal(true) // Show success modal
+      setTimeout(() => setShowSuccessModal(false), 3000) // Hide after 3 seconds
     } catch (error) {
       console.error('Error saving property:', error)
     }
@@ -97,7 +100,6 @@ export default function Dashboard() {
     setFilteredProperties([])
   }
 
-  // Ordena as propriedades por CMI como padrão
   const sortedProperties = [...(searchTerm ? filteredProperties : properties)].sort((a, b) => 
     a.cmi.localeCompare(b.cmi)
   )
@@ -105,9 +107,9 @@ export default function Dashboard() {
   const displayProperties = showAllRecords ? sortedProperties : (searchTerm ? filteredProperties : [])
 
   return (
-    <div className="min-h-screen bg-blue-50 p-8">
+    <div className="min-h-screen bg-slate/80 p-8">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8 text-blue-600">Gestor de Localizações</h1>
+        <h1 className=" text-center text-3xl font-semibold mb-8 text-blue-700">Gestor de Localizações</h1>
         
         <div className="mb-8 flex space-x-2">
           <input
@@ -115,29 +117,29 @@ export default function Dashboard() {
             placeholder="Pesquisar por CMI ou AL"
             value={searchTerm}
             onChange={handleSearch}
-            className="w-full p-2 rounded border"
+            className="w-full p-2 rounded border focus:outline-none"
           />
           <button
             onClick={() => {
               setCurrentProperty({ id: '', cmi: '', al: '', location: '' })
               setIsModalOpen(true)
             }}
-            className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+            className="bg-blue-700 text-white p-2 rounded hover:bg-blue-600"
           >
-          Adicionar
+            Adicionar
           </button>
           <button
             onClick={handleShowAllRecords}
-            className="bg-green-500 text-white p-2 rounded hover:bg-green-600 outline"
+            className="bg-blue-600 text-white p-2 rounded hover:bg-blue-500"
           >
             Mostrar Todos
           </button>
         </div>
 
-        <p className="mb-4">Total de registos:{totalRecords}</p>
+        <p className="mb-4">Total de registos: {totalRecords}</p>
 
         {displayProperties.length === 0 ? (
-          <p>{showAllRecords ? "Nenhuma localização encontrada." : "Clique em 'Mostrar Todos' para ver os registos ou faça uma pesquisa."}</p>
+          <p>{showAllRecords ? "Nenhuma Localização encontrada." : "Clique em 'Mostrar Todos' para ver os registos ou faça uma pesquisa."}</p>
         ) : (
           <ul>
             {displayProperties.map((property) => (
@@ -163,14 +165,14 @@ export default function Dashboard() {
         {isModalOpen && (
           <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
             <div className="bg-white p-5 rounded-lg w-96">
-              <h2 className="text-xl mb-4">{currentProperty?.id ? 'Editar' : 'Adicionar'}Localização</h2>
+              <h2 className="text-xl mb-4">{currentProperty?.id ? 'Editar' : 'Adicionar'} Localização</h2>
               <form onSubmit={handleSubmit}>
                 <input
                   type="text"
                   placeholder="CMI"
                   value={currentProperty?.cmi || ''}
                   onChange={(e) => setCurrentProperty(prev => ({ ...prev!, cmi: e.target.value }))}
-                  className="w-full p-2 mb-2 rounded border"
+                  className="w-full p-2 mb-2 rounded border focus:outline-none"
                   required
                 />
                 <input
@@ -178,7 +180,7 @@ export default function Dashboard() {
                   placeholder="AL"
                   value={currentProperty?.al || ''}
                   onChange={(e) => setCurrentProperty(prev => ({ ...prev!, al: e.target.value }))}
-                  className="w-full p-2 mb-2 rounded border"
+                  className="w-full p-2 mb-2 rounded border focus:outline-none"
                   required
                 />
                 <input
@@ -186,18 +188,26 @@ export default function Dashboard() {
                   placeholder="Link da localização"
                   value={currentProperty?.location || ''}
                   onChange={(e) => setCurrentProperty(prev => ({ ...prev!, location: e.target.value }))}
-                  className="w-full p-2 mb-2 rounded border"
+                  className="w-full p-2 mb-2 rounded border focus:outline-none"
                   required
                 />
                 <div className="flex justify-end mt-4">
                   <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 bg-gray-300 text-gray-800 rounded-md mr-2">
                     Cancelar
                   </button>
-                  <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded-md">
+                  <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-md">
                     Guardar
                   </button>
                 </div>
               </form>
+            </div>
+          </div>
+        )}
+
+        {showSuccessModal && (
+          <div className="fixed inset-0 bg-gray-200 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
+            <div className="bg-white p-5 rounded-lg">
+              <p className="text-xl text-blue-600">Localização adicionada com sucesso!</p>
             </div>
           </div>
         )}
