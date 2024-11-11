@@ -19,15 +19,17 @@ export default function Dashboard() {
   const [totalRecords, setTotalRecords] = useState(0)
   const [showAllRecords, setShowAllRecords] = useState(false)
   const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const fetchProperties = useCallback(async () => {
     try {
       const response = await fetch('/api/properties')
-      if (!response.ok) throw new Error('Erro')
+      if (!response.ok) throw new Error('Erro ao buscar propriedades')
       const data = await response.json()
       setProperties(data)
       setTotalRecords(data.length)
     } catch (error) {
+      setError('Erro ao buscar propriedades. Por favor, tente novamente.')
     }
   }, [])
 
@@ -56,24 +58,22 @@ export default function Dashboard() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (!currentProperty) return
-
     const url = currentProperty.id ? `/api/properties/${currentProperty.id}` : '/api/properties'
     const method = currentProperty.id ? 'PUT' : 'POST'
-
     try {
       const response = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(currentProperty),
       })
-      if (!response.ok) throw new Error('Erro a guardar')
+      if (!response.ok) throw new Error('Erro ao guardar')
       await fetchProperties()
       setIsModalOpen(false)
       setCurrentProperty(null)
-      setShowSuccessModal(true) // Show success modal
-      setTimeout(() => setShowSuccessModal(false), 3000) // Hide after 3 seconds
+      setShowSuccessModal(true)
+      setTimeout(() => setShowSuccessModal(false), 3000)
     } catch (error) {
-    
+      setError('Erro ao guardar propriedade. Por favor, tente novamente.')
     }
   }
 
@@ -83,13 +83,12 @@ export default function Dashboard() {
       alert('Senha incorreta')
       return
     }
-
     try {
       const response = await fetch(`/api/properties/${id}`, { method: 'DELETE' })
       if (!response.ok) throw new Error('Failed to delete property')
       await fetchProperties()
     } catch (error) {
-      
+      setError('Erro ao excluir propriedade. Por favor, tente novamente.')
     }
   }
 
@@ -108,7 +107,9 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-slate/80 p-8">
       <div className="max-w-4xl mx-auto">
-        <h1 className=" text-center text-3xl font-semibold mb-8 text-blue-700">Gestor de Localizações</h1>
+        <h1 className="text-center text-3xl font-semibold mb-8 text-blue-700">Gestor de Localizações</h1>
+        
+        {error && <p className="text-red-500 mb-4">{error}</p>}
         
         <div className="mb-8 flex space-x-2">
           <input

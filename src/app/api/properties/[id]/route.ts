@@ -7,14 +7,14 @@ interface Params {
   id: string;
 }
 
-// Função para lidar com requisições PUT
+// Function to handle PUT requests
 export async function PUT(request: NextRequest, { params }: { params: Params }) {
   const { id } = params;
 
   try {
     const body = await request.json();
 
-    // Verificação se os campos obrigatórios estão presentes
+    // Check if required fields are present
     if (!body.cmi || !body.al || !body.location) {
       return NextResponse.json({ error: 'Campos cmi, al e location são obrigatórios' }, { status: 400 });
     }
@@ -29,13 +29,12 @@ export async function PUT(request: NextRequest, { params }: { params: Params }) 
     });
 
     return NextResponse.json(property);
-  } catch (err) { 
-    console.error(err); 
+  } catch {
     return NextResponse.json({ error: 'Erro ao atualizar a propriedade' }, { status: 500 });
   }
 }
 
-// Função para lidar com requisições DELETE
+// Function to handle DELETE requests
 export async function DELETE(request: NextRequest, { params }: { params: Params }) {
   const { id } = params;
 
@@ -45,8 +44,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Params 
     });
 
     return NextResponse.json({ message: 'Localização apagada' });
-  } catch (err) { 
-    console.error(err); 
+  } catch {
     return NextResponse.json({ error: 'Erro ao apagar' }, { status: 500 });
   }
 }
