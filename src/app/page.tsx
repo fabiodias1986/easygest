@@ -2,7 +2,7 @@
 import './globals.css';
 
 import { useEffect, useState } from 'react';
-import Dashboard from '@/app/components/Dashboard/Dashboard'; // Certifique-se de que o caminho está correto
+import Dashboard from './components/Dashboard/Dashboard'; 
 
 export default function LoginPage() {
   const [password, setPassword] = useState('');
