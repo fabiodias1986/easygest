@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
+import { NextRequest, NextResponse } from 'next/server';
+import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 interface Params {
   id: string;
@@ -29,8 +29,8 @@ export async function PUT(request: NextRequest, { params }: { params: Params }) 
     });
 
     return NextResponse.json(property);
-  } catch (error) {
-    console.error(error); // Log do erro para facilitar a depuração
+  } catch (err) { 
+    console.error(err); 
     return NextResponse.json({ error: 'Erro ao atualizar a propriedade' }, { status: 500 });
   }
 }
@@ -45,8 +45,8 @@ export async function DELETE(request: NextRequest, { params }: { params: Params 
     });
 
     return NextResponse.json({ message: 'Localização apagada' });
-  } catch (error) {
-    console.error(error); // Log do erro para facilitar a depuração
+  } catch (err) { 
+    console.error(err); 
     return NextResponse.json({ error: 'Erro ao apagar' }, { status: 500 });
   }
 }
