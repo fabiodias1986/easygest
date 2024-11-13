@@ -24,12 +24,12 @@ export default function Dashboard() {
   const fetchProperties = useCallback(async () => {
     try {
       const response = await fetch('/api/properties')
-      if (!response.ok) throw new Error('Erro ao buscar propriedades')
+      if (!response.ok) throw new Error('Erro ao buscar localizacões')
       const data = await response.json()
       setProperties(data)
       setTotalRecords(data.length)
     } catch (error) {
-      setError('Erro ao buscar propriedades. Por favor, tente novamente.')
+      setError('Erro.Por favor, tente novamente.')
     }
   }, [])
 
@@ -73,7 +73,7 @@ export default function Dashboard() {
       setShowSuccessModal(true)
       setTimeout(() => setShowSuccessModal(false), 3000)
     } catch (error) {
-      setError('Erro ao guardar propriedade. Por favor, tente novamente.')
+      setError('Erro ao guardar localização. Por favor, tente novamente.')
     }
   }
 
@@ -85,10 +85,10 @@ export default function Dashboard() {
     }
     try {
       const response = await fetch(`/api/properties/${id}`, { method: 'DELETE' })
-      if (!response.ok) throw new Error('Failed to delete property')
+      if (!response.ok) throw new Error('Erro ao apagar localização')
       await fetchProperties()
     } catch (error) {
-      setError('Erro ao excluir propriedade. Por favor, tente novamente.')
+      setError('Erro ao apagar localização. Por favor, tente novamente.')
     }
   }
 
@@ -105,12 +105,10 @@ export default function Dashboard() {
   const displayProperties = showAllRecords ? sortedProperties : (searchTerm ? filteredProperties : [])
 
   return (
-    <div className="min-h-screen bg-slate/80 p-8">
+    <div className="min-h-screen bg-slate-200 p-8">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-center text-3xl font-semibold mb-8 text-blue-700">Gestor de Localizações</h1>
-        
-        {error && <p className="text-red-500 mb-4">{error}</p>}
-        
+        <h1 className="text-center text-3xl font-bold mb-8 text-blue-600">Gestor de Localizações</h1>
+                
         <div className="mb-8 flex space-x-2">
           <input
             type="text"
@@ -135,6 +133,8 @@ export default function Dashboard() {
             Mostrar Todos
           </button>
         </div>
+
+        {error && <p className="text-red-500 mb-4">{error}</p>}
 
         <p className="mb-4">Total de registos: {totalRecords}</p>
 
@@ -206,8 +206,8 @@ export default function Dashboard() {
 
         {showSuccessModal && (
           <div className="fixed inset-0 bg-gray-200 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
-            <div className="bg-white p-5 rounded-lg">
-              <p className="text-xl text-blue-600">Localização adicionada com sucesso!</p>
+            <div className="bg-blue-600 p-5 rounded-lg shadow-md">
+              <p className="text-xl text-white">Localização adicionada com sucesso!</p>
             </div>
           </div>
         )}
